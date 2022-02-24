@@ -1,6 +1,7 @@
 using MaterialSkin;
 using MaterialSkin.Controls;
 using System;
+using System.Collections.Generic;
 using System.Text;
 using System.Windows.Forms;
 
@@ -42,13 +43,13 @@ namespace MaterialSkinExample
             foreach (var FormStyleItem in Enum.GetNames(typeof(MaterialForm.FormStyles)))
             {
                 materialListBoxFormStyle.AddItem(FormStyleItem);
-                if (FormStyleItem == this.FormStyle.ToString()) materialListBoxFormStyle.SelectedIndex = materialListBoxFormStyle.Items.Count-1;
+                if (FormStyleItem == this.FormStyle.ToString()) materialListBoxFormStyle.SelectedIndex = materialListBoxFormStyle.Items.Count - 1;
             }
 
             materialListBoxFormStyle.SelectedIndexChanged += (sender, args) =>
             {
                 MaterialForm.FormStyles SelectedStyle = (MaterialForm.FormStyles)Enum.Parse(typeof(MaterialForm.FormStyles), args.Text);
-                if (this.FormStyle!= SelectedStyle) this.FormStyle = SelectedStyle;
+                if (this.FormStyle != SelectedStyle) this.FormStyle = SelectedStyle;
             };
 
             materialMaskedTextBox1.ValidatingType = typeof(System.Int16);
@@ -67,12 +68,26 @@ namespace MaterialSkinExample
                 new []{"Honeycomb", "408", "3.2", "6.5"}
             };
 
+            List<Items> itemList = new List<Items>();
+
             //Add
             foreach (string[] version in data)
             {
                 var item = new ListViewItem(version);
                 materialListView1.Items.Add(item);
+                itemList.Add(new Items
+                {
+                    Itemname = version[0],
+                    Calories = version[1],
+                    Fat = Convert.ToDouble(version[2]),
+                    Protien = Convert.ToDouble(version[3])
+                });
+
             }
+
+
+            materialDataTable1.DataSource = itemList;
+            materialDataTable1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
         private void materialButton1_Click(object sender, EventArgs e)
@@ -222,13 +237,13 @@ namespace MaterialSkinExample
         {
             if (materialComboBox7.SelectedIndex == 1)
             {
-                    materialTextBox21.PrefixSuffix = MaterialTextBox2.PrefixSuffixTypes.Prefix;
+                materialTextBox21.PrefixSuffix = MaterialTextBox2.PrefixSuffixTypes.Prefix;
             }
             else if (materialComboBox7.SelectedIndex == 2)
             {
                 materialTextBox21.PrefixSuffix = MaterialTextBox2.PrefixSuffixTypes.Suffix;
             }
-            else 
+            else
             {
                 materialTextBox21.PrefixSuffix = MaterialTextBox2.PrefixSuffixTypes.None;
             }
@@ -272,17 +287,17 @@ namespace MaterialSkinExample
         {
             materialCheckbox1.ReadOnly = msReadOnly.Checked;
         }
-        
+
         private void materialButton25_Click(object sender, EventArgs e)
         {
-            MaterialDialog materialDialog = new MaterialDialog(this,"Dialog Title", "Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.", "OK", true, "Cancel");
+            MaterialDialog materialDialog = new MaterialDialog(this, "Dialog Title", "Dialogs inform users about a task and can contain critical information, require decisions, or involve multiple tasks.", "OK", true, "Cancel");
             DialogResult result = materialDialog.ShowDialog(this);
 
-            MaterialSnackBar SnackBarMessage = new MaterialSnackBar(result.ToString(),750);
+            MaterialSnackBar SnackBarMessage = new MaterialSnackBar(result.ToString(), 750);
             SnackBarMessage.Show(this);
 
         }
-        
+
         private void materialSwitch16_CheckedChanged(object sender, EventArgs e)
         {
             materialTextBox21.ShowAssistiveText = materialSwitch16.Checked;
